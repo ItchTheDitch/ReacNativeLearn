@@ -1,18 +1,35 @@
 import React, { Component } from 'react';
-import { Text, TouchableWithoutFeedback, View } from 'react-native';
+import { 
+    Text, 
+    TouchableWithoutFeedback, 
+    View,
+    UIManager, 
+    LayoutAnimation 
+} from 'react-native';
 import { connect } from 'react-redux';
 import { CardSection } from './common';
 import * as actions from '../actions';
 
+// UIManager from NativeModules (see Q & A)
+UIManager.setLayoutAnimationEnabledExperimental(true);
+
 class ListItem extends Component {
+    componentWillUpdate() {
+        LayoutAnimation.spring();
+    }
+
     renderDescription() {
-        const { library, selectedLibraryId } = this.props;
-        if (library.id === selectedLibraryId) {
+        const { library, expanded } = this.props;
+
+        if (expanded) {
             return (
-                <Text>{library.description}</Text>
+                <CardSection>
+                    <Text style={{ flex: 1, paddingLeft: 15 }}>
+                    {library.description}
+                    </Text>
+                </CardSection>
             );
         }
-
     }
     render() { 
         const { titleStyle } = styles;
@@ -22,7 +39,7 @@ class ListItem extends Component {
             // selectlibrary from actions creator
             <TouchableWithoutFeedback
                 // this.props object now have selectLibrary argument from actions creator,
-                //cause connect have actions argument
+                //cause connect have actions argument line :65
                 //selectLibrary coming from actions creator function
                 onPress={() => this.props.selectLibrary(id)}
             >
@@ -46,10 +63,12 @@ const styles = {
         paddingLeft: 15
     }
 };
-
-const mapStateToProps = state => {
+// this ownProps is equal to this.props inside component
+const mapStateToProps = (state, ownProps) => {
     // state.selectedLibraryId is from reducer
-    return { selectedLibraryId: state.selectedLibraryId };
+    const expanded = state.selectedLibraryId === ownProps.library.id;
+
+    return { expanded };
 };
 
 // null because there is no mapToProps()
