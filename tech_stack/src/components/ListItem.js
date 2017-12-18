@@ -39,7 +39,7 @@ class ListItem extends Component {
             // selectlibrary from actions creator
             <TouchableWithoutFeedback
                 // this.props object now have selectLibrary argument from actions creator,
-                //cause connect have actions argument line :65
+                //cause connect have actions argument line :82
                 //selectLibrary coming from actions creator function
                 onPress={() => this.props.selectLibrary(id)}
             >
