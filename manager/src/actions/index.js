@@ -34,6 +34,7 @@ export const loginUser = ({ email, password }) => {
             console.log(error);
 
             firebase.auth().createUserWithEmailAndPassword(email, password)
+                // can be change with loginUserSuccess helper function
                     //(because both of them is identical) 
                 .then(user => {
                     dispatch({ type: LOGIN_USER_SUCCESS, payload: user });
