@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
+import { View, Text } from 'react-native';
 import { connect } from 'react-redux';
 import { emailChanged, passwordChanged, loginUser } from '../actions';
-import { Card, CardSection, Input, Button } from './common';
+import { Card, CardSection, Input, Button, Spinner } from './common';
 
 
 class LoginForm extends Component {
     onEmailChange(text) {
         this.props.emailChanged(text);
     }
-
+    // 
     onPasswordChange(text) {
         //passwordChanged from action creator (index.js)
         this.props.passwordChanged(text);
@@ -21,6 +22,30 @@ class LoginForm extends Component {
         this.props.loginUser({ email, password });
     }
 
+    renderButton() {
+        // loading == true spinners is spin
+        if (this.props.loading) {
+            return <Spinner />;
+        }
+        return (
+            <Button onPress={this.onButtonPress.bind(this)} >
+                Login
+            </Button>
+        );
+    }
+
+    renderError() {
+        if (this.props.error) {
+            return (
+                <View style={{ backgroundColor: 'white' }}>
+                    <Text style={styles.errorTextStyle}>
+                        {this.props.error}
+                    </Text>
+                </View>
+            );
+        }
+    }
+
     render() {
         return (
             <Card>
@@ -28,6 +53,7 @@ class LoginForm extends Component {
                     <Input
                         label="Email"
                         placeholder="email@gmail.com"
+                        //to get input value 
                         onChangeText={this.onEmailChange.bind(this)}
                         // this.props.email is from mapStateToProps
                         value={this.props.email}
@@ -44,23 +70,30 @@ class LoginForm extends Component {
                     />
                 </CardSection>
 
+                {this.renderError()}
+
                 <CardSection>
-                    <Button onPress={this.onButtonPress.bind(this)} >
-                        Login
-                    </Button>
+                    {this.renderButton()}
                 </CardSection>
             </Card>
         );
     }
 }
 
-const mapStateToProps = state => {
-    return {
-        // auth from reducer(index.js)
-        // email from (AuthReducer)
-        email: state.auth.email,
-        password: state.auth.password
-    };
+const styles = {
+    errorTextStyle: {
+        fontSize: 20,
+        alignSelf: 'center',
+        color: 'red'
+    }
+};
+                        //(state)
+const mapStateToProps = ({ auth }) => {
+    // auth from reducer(index.js)              //state.auth
+    const { email, password, error, loading } = auth;
+
+    // email from (AuthReducer)
+    return { email, password, error, loading };
 };
 
 export default connect(mapStateToProps, { emailChanged, passwordChanged, loginUser })(LoginForm);
