@@ -71,7 +71,7 @@ const mapStateToProps = (state, ownProps) => {
     return { expanded };
 };
 
-// null because there is no mapToProps()
+// null because there is no mapToProps(null,actons)
 
 //actions do 2 things:
 //1. mutates this function into something special whenever its call

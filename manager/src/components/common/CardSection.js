@@ -2,14 +2,15 @@ import React from 'react';
 import { View } from 'react-native';
 
 const CardSection = (props) => (
-        <View style={styles.containerStyle}>
+        // style most to the right will overwrithe style on the left
+        <View style={[styles.containerStyle, props.style]}>
             {props.children}
         </View>
     );
 
 const styles = {
     containerStyle: {
-        borderBottomWidth: 1,
+        borderBottomWidth: 2,
         padding: 5,
         backgroundColor: '#fff',
         justifyContent: 'flex-start',
