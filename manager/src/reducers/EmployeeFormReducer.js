@@ -1,5 +1,6 @@
 import {
-    EMPLOYEE_UPDATE
+    EMPLOYEE_UPDATE,
+    EMPLOYEE_CREATE
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -9,7 +10,6 @@ const INITIAL_STATE = {
 };
 
 export default (state = INITIAL_STATE, action) => {
-    
     console.log(action.payload);
     switch (action.type) {
         case EMPLOYEE_UPDATE:
@@ -18,6 +18,9 @@ export default (state = INITIAL_STATE, action) => {
             //if we call our action Creator with a prop of name the [action.payload.prop] will turn
             // in to name: 
             return { ...state, [action.payload.prop]: action.payload.value };
+
+        case EMPLOYEE_CREATE:
+            return INITIAL_STATE;
 
         default:
             return state;
