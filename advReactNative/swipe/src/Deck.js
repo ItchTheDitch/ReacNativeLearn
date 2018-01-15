@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
-import { View, Animated, PanResponder } from 'react-native';
+import { View, Animated, PanResponder, Dimensions } from 'react-native';
+//Dimensions's object is used to retrive the width or the height of the screen
+    //that the app is running on currently
 
+
+const SCREEN_WIDTH = Dimensions.get('window').width;
 
 class Deck extends Component {
     constructor(props) {
@@ -20,7 +24,9 @@ class Deck extends Component {
             },  
 
             //is called any time when user let go their finger from screen
-            onPanResponderRelease: () => {}
+            onPanResponderRelease: () => {
+                this.resetPosition();
+            }
         });
 
         // we never call setState to update panResponder
@@ -29,11 +35,17 @@ class Deck extends Component {
         this.state = { panResponder, position }; // offcial way to assign panResponder
     }
 
+    resetPosition() {
+        Animated.spring(this.state.position, {
+            toValue: { x: 0, y: 0 }
+        }).start();
+    }
+
     getCardStyle() {
         const { position } = this.state;
         const rotate = position.x.interpolate({
-            inputRange: [-500, 0, 500],
-            ouputRange: ['-120deg', '0deg', '120deg']
+            inputRange: [-SCREEN_WIDTH * 1.5, 0, SCREEN_WIDTH * 1.5 ],
+            outputRange: ['-120deg', '0deg', '120deg']
         });
 
         return {
