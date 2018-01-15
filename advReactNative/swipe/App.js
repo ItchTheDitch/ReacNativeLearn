@@ -18,6 +18,7 @@ export default class App extends React.Component {
   renderCard(item) {
     return (
       <Card
+        key={item.id}
         title= {item.text}
         image= {{ uri: item.uri }}
       >
@@ -27,7 +28,7 @@ export default class App extends React.Component {
         <Button 
           icon= {{name: 'code'}}
           backgroundColor="#03A9F4"
-          title="View Now!"
+          title="View"
         />
 
       </Card>
